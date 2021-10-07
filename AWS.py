@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 import botocore
 import boto3
 
@@ -44,11 +43,3 @@ class AWS:
                     print("The object does not exist on S3 Bucket.")
                 else:
                     raise ValueError("An generic error occur")
-
-# load_dotenv()
-# print(os.getenv('ACCESS_KEY_ID'))
-#
-# aws = AWS(os.environ['ACCESS_KEY_ID'], os.environ['SECRET_ACCESS_KEY'])
-# #
-# aws.csv_from_s3(os.environ['BUCKET'], "csv-not-processed/", "test.csv")
-# print(aws.get_files_name("myaguila-test", "csv-not-processed", ".csv"))

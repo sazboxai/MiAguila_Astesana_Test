@@ -1,10 +1,26 @@
 import pandas as pd
 
 
+def read_index(path, file_name):
+    full_dir = path + file_name + '.txt'
+    try:
+        f = open(full_dir)
+        str_line = f.readline().rstrip()
+        index = int(str_line.split(':')[1])
+        f.close()
+        return index
+    except:
+        raise ValueError("The index file has an error or not exist")
+
+
 def read_data(path, file_name):
-    full_dir = path + file_name
-    df = pd.read_csv(full_dir, index_col=None, header=0)
-    return df
+    try:
+        full_dir = path + file_name
+        df = pd.read_csv(full_dir, index_col=None, header=0)
+        print(f"the file {path + file_name} has been loaded ")
+        return df
+    except:
+        raise ValueError("Some problem with the local CSV file occur")
 
 
 def valid_coordinate(lon, lat):
@@ -15,8 +31,3 @@ def valid_coordinate(lon, lat):
             return False
     except:
         return False
-
-
-# df = read_data('data/', 'test.csv')
-print(valid_coordinate(None, 0))
-a = 5
