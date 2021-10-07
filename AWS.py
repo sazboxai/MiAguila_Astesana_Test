@@ -18,7 +18,7 @@ class AWS:
                 file_names.append(file)
         return file_names
 
-    def csv_from_S3(self, bucket, subdir, file_name, local_folder='data/'):
+    def csv_from_s3(self, bucket, subdir, file_name, local_folder='data/'):
         if not os.path.exists(local_folder):
             os.makedirs(local_folder, exist_ok=False)
             print("The new directory was created!")
@@ -28,6 +28,11 @@ class AWS:
 
         else:
             try:
+                file = open(local_folder + file_name + ".txt", "w")
+                file.write("processed lines:0")
+                file.close()
+                print(f"The file {file_name}.txt was created!")
+
                 s3 = boto3.resource('s3', aws_access_key_id=self.access_key_id,
                                     aws_secret_access_key=self.secret_access_key)
                 s3.Bucket(bucket).download_file(subdir + file_name, local_folder + file_name)
@@ -40,7 +45,7 @@ class AWS:
                     raise ValueError("An generic error occur")
 
 
-# aws = AWS("AKIAVLAF3GT7HB5Q73OC", "sH3/jptm4HZyX4eYLH1+Hlhwy33EtOOsAUgf9cav")
+aws = AWS("AKIAVLAF3GT7HB5Q73OC", "sH3/jptm4HZyX4eYLH1+Hlhwy33EtOOsAUgf9cav")
 #
-# aws.csv_from_S3("myaguila-test", "csv-not-processed/", "tes.csv")
+aws.csv_from_s3("myaguila-test", "csv-not-processed/", "test.csv")
 # print(aws.get_files_name("myaguila-test", "csv-not-processed", ".csv"))
