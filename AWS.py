@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import botocore
 import boto3
 
@@ -28,15 +29,15 @@ class AWS:
 
         else:
             try:
-                file = open(local_folder + file_name + ".txt", "w")
-                file.write("processed lines:0")
-                file.close()
-                print(f"The file {file_name}.txt was created!")
-
                 s3 = boto3.resource('s3', aws_access_key_id=self.access_key_id,
                                     aws_secret_access_key=self.secret_access_key)
                 s3.Bucket(bucket).download_file(subdir + file_name, local_folder + file_name)
                 print(f"The file {file_name} was download!")
+
+                file = open(local_folder + file_name + ".txt", "w")
+                file.write("processed lines:0")
+                file.close()
+                print(f"The file {file_name}.txt was created!")
 
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == "404":
@@ -44,8 +45,10 @@ class AWS:
                 else:
                     raise ValueError("An generic error occur")
 
-
-aws = AWS("AKIAVLAF3GT7HB5Q73OC", "sH3/jptm4HZyX4eYLH1+Hlhwy33EtOOsAUgf9cav")
+# load_dotenv()
+# print(os.getenv('ACCESS_KEY_ID'))
 #
-aws.csv_from_s3("myaguila-test", "csv-not-processed/", "test.csv")
+# aws = AWS(os.environ['ACCESS_KEY_ID'], os.environ['SECRET_ACCESS_KEY'])
+# #
+# aws.csv_from_s3(os.environ['BUCKET'], "csv-not-processed/", "test.csv")
 # print(aws.get_files_name("myaguila-test", "csv-not-processed", ".csv"))
