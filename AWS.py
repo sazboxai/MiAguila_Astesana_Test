@@ -1,6 +1,6 @@
 import os
-import botocore
 import boto3
+from botocore import exceptions
 
 
 class AWS:
@@ -38,7 +38,7 @@ class AWS:
                 file.close()
                 print(f"The file {file_name}.txt was created!")
 
-            except botocore.exceptions.ClientError as e:
+            except exceptions.ClientError as e:
                 if e.response['Error']['Code'] == "404":
                     print("The object does not exist on S3 Bucket.")
                 else:

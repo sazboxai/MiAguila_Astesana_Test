@@ -13,6 +13,16 @@ def read_index(path, file_name):
         raise ValueError("The index file has an error or not exist")
 
 
+def modify_index(path, file_name, new_index):
+    full_dir = path + file_name + '.txt'
+    try:
+        with open(full_dir, 'w') as file:
+            file.writelines(f"processed lines:{new_index}")
+        print("The file: " + path + file_name + '.txt' + " was modified")
+    except:
+        raise ValueError("The index file has an error or not exist")
+
+
 def read_data(path, file_name):
     try:
         full_dir = path + file_name
@@ -31,3 +41,15 @@ def valid_coordinate(lon, lat):
             return False
     except:
         return False
+
+
+def invalids_coordinates(df):
+    invalids = []  # ['lon', 'lat', 'problem']
+    valid = []  # ['lon', 'lat']
+
+    for index, row in df.iterrows():
+        if not valid_coordinate(row['lon'], row['lat']):
+            invalids.append([row['lon'], row['lat'], "The coordinates are invalids"])
+        else:
+            valid.append([row['lon'], row['lat']])
+    return pd.DataFrame(valid, columns=['lon', 'lat']), pd.DataFrame(invalids, columns=['lon', 'lat', 'problem'])
