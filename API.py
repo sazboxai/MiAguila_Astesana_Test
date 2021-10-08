@@ -22,13 +22,17 @@ def api_get_batchs(df_batch, queries_per_sec):
 
 
 def postal_code_df_constructor(df, postal_codes):
-    postal_codes_list = []  # ['lon', 'lat', 'postal_code']
+    invalids = []  # ['lon', 'lat', 'problem']
+    valid = []  # ['lon', 'lat', 'postal_code']
     i = 0
     for index, row in df.iterrows():
-        postal_codes_list.append(
-            [row['lon'], row['lat'], postal_codes[i]])
+        if postal_codes[i] != 'Those coordinates does not have correspondence with any postal code':
+            valid.append([row['lon'], row['lat'], postal_codes[i]])
+        else:
+            invalids.append([row['lon'], row['lat'], postal_codes[i]])
         i += 1
-    return pd.DataFrame(postal_codes_list, columns=['lon', 'lat', 'postal_code'])
+    return pd.DataFrame(valid, columns=['lon', 'lat', 'postal_code']), pd.DataFrame(invalids,
+                                                                                    columns=['lon', 'lat', 'problem'])
 
 
 def split_df(df_batch, size):

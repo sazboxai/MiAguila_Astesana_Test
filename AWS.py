@@ -1,6 +1,9 @@
 import os
 import boto3
 from botocore import exceptions
+from gevent import monkey
+
+monkey.patch_all()
 
 
 class AWS:

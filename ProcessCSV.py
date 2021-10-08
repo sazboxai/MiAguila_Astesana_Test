@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 
 def read_index(path, file_name):
@@ -31,6 +32,11 @@ def read_data(path, file_name):
         return df
     except:
         raise ValueError("Some problem with the local CSV file occur")
+
+
+def save_invalid_values(df, path, file_name):
+    df.to_csv(path + 'invalids' + file_name, mode='a', header=not os.path.exists(path + 'invalids' + file_name),
+              index=False)
 
 
 def valid_coordinate(lon, lat):

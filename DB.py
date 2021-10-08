@@ -1,5 +1,3 @@
-import os
-
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
@@ -16,4 +14,4 @@ class DB:
     def insert_db(self, df, table_name):
         db_string = f"postgresql://{self.db_user}:{self.db_pass}@localhost:{self.port}/{self.db_name}"
         engine = create_engine(db_string)
-        df.to_sql(table_name, engine, if_exists='append')
+        df.to_sql(table_name, engine, if_exists='append', index=False)
