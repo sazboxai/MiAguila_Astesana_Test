@@ -54,7 +54,6 @@ def exception(request, exception):
 def async_queries(urls):
     start_time = time.time()
     responses = grequests.map((grequests.get(u) for u in urls), exception_handler=exception, size=5)
-    print("--- %s seconds ---" % (time.time() - start_time))
     return responses
 
 

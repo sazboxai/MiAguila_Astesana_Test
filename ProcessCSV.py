@@ -19,7 +19,7 @@ def modify_index(path, file_name, new_index):
     try:
         with open(full_dir, 'w') as file:
             file.writelines(f"processed lines:{new_index}")
-        print("The file: " + path + file_name + '.txt' + " was modified")
+        print("The file: " + path + file_name + '.txt' + " has been updated")
     except:
         raise ValueError("The index file has an error or not exist")
 
@@ -37,6 +37,7 @@ def read_data(path, file_name):
 def save_invalid_values(df, path, file_name):
     df.to_csv(path + 'invalids' + file_name, mode='a', header=not os.path.exists(path + 'invalids' + file_name),
               index=False)
+    print("The file: " + path + 'invalids' + file_name + " has been updated")
 
 
 def valid_coordinate(lon, lat):
@@ -59,3 +60,10 @@ def invalids_coordinates(df):
         else:
             valid.append([row['lon'], row['lat']])
     return pd.DataFrame(valid, columns=['lon', 'lat']), pd.DataFrame(invalids, columns=['lon', 'lat', 'problem'])
+
+
+def convert_seconds(seconds):
+    h = seconds // (60 * 60)
+    m = (seconds - h * 60 * 60) // 60
+    s = seconds - (h * 60 * 60) - (m * 60)
+    return [int(h), int(m), int(s)]
