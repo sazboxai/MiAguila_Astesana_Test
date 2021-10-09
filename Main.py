@@ -1,15 +1,17 @@
 import os
 import time
+from gevent import monkey
 
 from dotenv import load_dotenv
 
-from API import api_get_batchs
+from API import api_get_batches
 from AWS import AWS
 from DB import DB
 from ProcessCSV import read_index, read_data, invalids_coordinates, modify_index, save_invalid_values, convert_seconds
 import pandas as pd
 
 load_dotenv()
+monkey.patch_all()
 
 
 def wrapper(s3_subdir, file_name, local_subdir, batch_size, queries_per_sec):
@@ -30,7 +32,7 @@ def wrapper(s3_subdir, file_name, local_subdir, batch_size, queries_per_sec):
         if batch_size > len(df_file) - index: batch_size = len(df_file) - index
         batch = df_file[index:index + batch_size]
         df_valid, df_invalids = invalids_coordinates(batch)
-        df_valid_with_pc, df_invalids_aux = api_get_batchs(df_valid, queries_per_sec)
+        df_valid_with_pc, df_invalids_aux = api_get_batches(df_valid, queries_per_sec)
         df_invalids = pd.concat([df_invalids, df_invalids_aux])
 
         # insert valid_values into DB

@@ -4,7 +4,7 @@ import re
 import pandas as pd
 
 
-def api_get_batchs(df_batch, queries_per_sec):
+def api_get_batches(df_batch, queries_per_sec):
     start_time = time.time()
     df_batches = split_df(df_batch, queries_per_sec)
     postal_codes = []  # ['lon', 'lat', 'postal_code']
@@ -12,7 +12,7 @@ def api_get_batchs(df_batch, queries_per_sec):
         # Here I apply the control over the queries to the API (Only allow x queries per second as maximum)
         time_dif = time.time() - start_time
         if time_dif < 1:
-            time.sleep(time_dif)
+            time.sleep((time_dif + 1) % 1)
         start_time = time.time()
         # Performing queries to the API
         urls = get_urls(mini_batch)
@@ -52,7 +52,6 @@ def exception(request, exception):
 
 
 def async_queries(urls):
-    start_time = time.time()
     responses = grequests.map((grequests.get(u) for u in urls), exception_handler=exception, size=5)
     return responses
 

@@ -21,7 +21,7 @@ def modify_index(path, file_name, new_index):
             file.writelines(f"processed lines:{new_index}")
         print("The file: " + path + file_name + '.txt' + " has been updated")
     except:
-        raise ValueError("The index file has an error or not exist")
+        raise ValueError("The file does not exist or index file has an error or not exist")
 
 
 def read_data(path, file_name):
