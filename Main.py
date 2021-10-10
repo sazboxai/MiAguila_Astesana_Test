@@ -37,7 +37,7 @@ def wrapper(s3_subdir, file_name, local_subdir, batch_size, queries_per_sec):
 
         # insert valid_values into DB
         db = DB(os.getenv('DB_USER'), os.getenv('DB_PASS'), os.getenv('DB_PORT'), os.getenv('DB_NAME'))
-        db.insert_db(df_valid_with_pc, "post_codes")
+        db.insert_db(df_valid_with_pc, "zip_code")
         db.update_transaction_log(file_name, index, index + batch_size, "transaction_log", len(df_valid_with_pc),
                                   len(df_invalids))
         # insert invalid_values into CSV_file
