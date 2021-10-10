@@ -50,7 +50,10 @@ SECRET_ACCESS_KEY=SENT_IN_THE_MAIL
 BUCKET=SENT_IN_THE_MAIL
 ```  
 
-2. `requirements.txt` must be pip installed
+2. `requirements.txt` must be installed
+   
+3. pip install psycopg2
+
 3. Run `Main.py` and the process should start. You can stop the process whenever you want. When you rerun the `Main.py`
    file the process will start from last row processed.
 
