@@ -65,15 +65,18 @@ locally ("/data") into a file named ("invalidpostcodesgeo.csv")
 
 ## 5- Performing limit controller for API queries.
 
-The function named api_get_batches is the one that perform async queries to the "https://postcodes.io/" API. Here I used
-grequest and time libraries for limitting the max number of petitions that can be performed per minute to the API. The
-máx number of petitions can be changed withe the variable **queries_per_sec**
+The function named `api_get_batches` is the one that perform async queries to the "https://postcodes.io/" API. Here I
+used
+_**grequest**_ and _**time**_ libraries for limitting the max number of petitions that can be performed per minute to
+the API. The máx number of petitions can be changed withe the variable **queries_per_sec**
 
 ## 6- Git /Git Flow
 
-How the work was done just for me and it was quite simple, it was not imperative to use Git Flow methodology. I know the
-importance of using Git Flow and I used this methodology in the past. We implement it using at least 2 branches. 1 for
-production (master) and other for develop (develop).
+How the work was done individually and it was quite simple, it was not necessary to use the Git Flow methodology. I know
+of the importance of using Git Flow and that's why I used this methodology in the past. The most common way to implement
+it is by using at least 2 branches. 1 for production (master) and other for development (development). When working as a
+team, tasks are divided and branches are created (were each dev works) that are then merged to master once finished and
+tested.
 
 ## 7- Good Practices Performed
 
@@ -83,4 +86,4 @@ production (master) and other for develop (develop).
 ## 8- Unit test
 
 - unittest library
-- You can try this test running `UnitTests.py` file
+- You can run this tests running `UnitTests.py` file.

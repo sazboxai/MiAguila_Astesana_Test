@@ -7,7 +7,7 @@ import pandas as pd
 def api_get_batches(df_batch, queries_per_sec):
     start_time = time.time()
     df_batches = split_df(df_batch, queries_per_sec)
-    postal_codes = []  # ['lon', 'lat', 'postal_code']
+    zip_codes = []  # ['lon', 'lat', 'zip_code']
     for mini_batch in df_batches:
         # Here I apply the control over the queries to the API (Only allow x queries per second as maximum)
         time_dif = time.time() - start_time
@@ -16,22 +16,22 @@ def api_get_batches(df_batch, queries_per_sec):
         start_time = time.time()
         # Performing queries to the API
         urls = get_urls(mini_batch)
-        postal_codes = postal_codes + get_postal_codes(async_queries(urls))
+        zip_codes = zip_codes + get_zip_codes(async_queries(urls))
 
-    return postal_code_df_constructor(df_batch, postal_codes)
+    return zip_code_df_constructor(df_batch, zip_codes)
 
 
-def postal_code_df_constructor(df, postal_codes):
+def zip_code_df_constructor(df, zip_codes):
     invalids = []  # ['lon', 'lat', 'problem']
-    valid = []  # ['lon', 'lat', 'postal_code']
+    valid = []  # ['lon', 'lat', 'zip_code']
     i = 0
     for index, row in df.iterrows():
-        if postal_codes[i] != 'Those coordinates does not have correspondence with any postal code':
-            valid.append([row['lon'], row['lat'], postal_codes[i]])
+        if zip_codes[i] != 'Those coordinates does not have correspondence with any postal code':
+            valid.append([row['lon'], row['lat'], zip_codes[i]])
         else:
-            invalids.append([row['lon'], row['lat'], postal_codes[i]])
+            invalids.append([row['lon'], row['lat'], zip_codes[i]])
         i += 1
-    return pd.DataFrame(valid, columns=['lon', 'lat', 'postal_code']), pd.DataFrame(invalids,
+    return pd.DataFrame(valid, columns=['lon', 'lat', 'zip_code']), pd.DataFrame(invalids,
                                                                                     columns=['lon', 'lat', 'problem'])
 
 
@@ -56,11 +56,11 @@ def async_queries(urls):
     return responses
 
 
-def get_postal_codes(api_responses):
-    postal_codes = []
+def get_zip_codes(api_responses):
+    zip_codes = []
     for elem in api_responses:
         try:
-            postal_codes.append(re.search('"postcode":\"(.*?)\",', elem.text).group(1))
+            zip_codes.append(re.search('"postcode":\"(.*?)\",', elem.text).group(1))
         except:
-            postal_codes.append('Those coordinates does not have correspondence with any postal code')
-    return postal_codes
+            zip_codes.append('Those coordinates does not have correspondence with any postal code')
+    return zip_codes
